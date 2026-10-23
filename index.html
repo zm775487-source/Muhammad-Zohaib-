@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Zohaib — Website Developer, Video Editor & Content Creator</title>
+<meta name="description" content="Portfolio of Muhammad Zohaib, BS Computer Science student and digital service provider: website development, video editing, product promotion, content creation, CV & resume design and business proposals.">
+<meta name="author" content="Muhammad Zohaib">
+<meta property="og:title" content="Muhammad Zohaib — I Turn Ideas Into Digital Experiences">
+<meta property="og:description" content="Website Developer | Content Creator | Video Editor | Product Promotion | CV & Resume Designer">
+<meta property="og:type" content="website">
+<meta property="og:image" content="profile.jpg">
+<link rel="icon" href="profile.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { ink:'#05070f', navy:'#0a0f24', panel:'#0d1330', electric:'#2f7bff', violet2:'#8b5cf6' },
+    fontFamily: { sora:['Sora','sans-serif'], inter:['Inter','sans-serif'] }
+  } }
+}
+</script>
+<style>
+  html{ -webkit-text-size-adjust:100%; }
+  body{ background:#05070f; overflow-x:hidden; }
+  ::selection{ background:#2f7bff; color:#fff; }
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:#070a18; }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(#2f7bff,#8b5cf6); border-radius:8px; }
+
+  .grad-text{ background:linear-gradient(92deg,#5ea0ff 0%,#2f7bff 35%,#8b5cf6 75%,#c084fc 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .glass{ background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.09); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+  .glass:hover{ border-color:rgba(94,160,255,.45); }
+  .card{ transition:transform .45s cubic-bezier(.2,.7,.2,1), border-color .3s, box-shadow .45s; }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 24px 50px -18px rgba(47,123,255,.35); }
+  .btn-primary{ background:linear-gradient(92deg,#2f7bff,#8b5cf6); box-shadow:0 12px 30px -8px rgba(80,110,255,.55); transition:transform .25s, box-shadow .25s; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 18px 38px -8px rgba(80,110,255,.7); }
+  .btn-ghost{ transition:transform .25s, border-color .25s, background .25s; }
+  .btn-ghost:hover{ transform:translateY(-2px); border-color:rgba(94,160,255,.7); background:rgba(47,123,255,.08); }
+  .glow-ring{ position:relative; }
+  .glow-ring::before{ content:''; position:absolute; inset:-14px; border-radius:2rem; background:conic-gradient(from 120deg,#2f7bff,#8b5cf6,#2f7bff); opacity:.55; filter:blur(22px); z-index:-1; animation:spinGlow 9s linear infinite; }
+  @keyframes spinGlow{ to{ filter:blur(22px) hue-rotate(40deg); } }
+  .blob{ position:absolute; border-radius:9999px; filter:blur(90px); opacity:.5; pointer-events:none; }
+  .float-slow{ animation:floaty 7s ease-in-out infinite; }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+  .nav-link{ position:relative; }
+  .nav-link::after{ content:''; position:absolute; left:0; bottom:-4px; height:2px; width:0; background:linear-gradient(90deg,#2f7bff,#8b5cf6); transition:width .3s; }
+  .nav-link:hover::after,.nav-link.active::after{ width:100%; }
+  .caret::after{ content:'|'; margin-left:2px; color:#5ea0ff; animation:blink 1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .filter-btn.active{ background:linear-gradient(92deg,#2f7bff,#8b5cf6); color:#fff; border-color:transparent; }
+  .proj-cover{ height:180px; display:flex; align-items:center; justify-content:center; font-family:Sora,sans-serif; }
+  input,textarea{ outline:none; }
+  input:focus,textarea:focus{ border-color:rgba(94,160,255,.75)!important; box-shadow:0 0 0 3px rgba(47,123,255,.18); }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none!important; transition:none!important; } .reveal{ opacity:1; transform:none; } }
+</style>
+</head>
+<body class="font-inter text-slate-200 antialiased">
+
+<!-- ambient background glows -->
+<div class="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+  <div class="blob w-[480px] h-[480px] bg-blue-600/40 -top-40 -left-32"></div>
+  <div class="blob w-[420px] h-[420px] bg-violet-600/30 top-[45%] -right-40"></div>
+  <div class="blob w-[380px] h-[380px] bg-indigo-500/25 bottom-[-120px] left-[30%]"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 55% at 50% -10%,rgba(47,123,255,.14),transparent 60%);"></div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50">
+  <nav class="glass mx-3 md:mx-auto max-w-6xl mt-3 rounded-2xl px-5 py-3 flex items-center justify-between" aria-label="Main navigation">
+    <a href="#home" class="font-sora font-800 text-lg tracking-tight flex items-center gap-2.5">
+      <img src="profile.jpg" alt="Muhammad Zohaib" class="w-9 h-9 rounded-full object-cover ring-2 ring-blue-500/60">
+      <span class="font-bold">Muhammad <span class="grad-text">Zohaib</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+      <a class="nav-link hover:text-white" href="#home">Home</a>
+      <a class="nav-link hover:text-white" href="#about">About</a>
+      <a class="nav-link hover:text-white" href="#services">Services</a>
+      <a class="nav-link hover:text-white" href="#skills">Skills</a>
+      <a class="nav-link hover:text-white" href="#work">Work</a>
+      <a class="nav-link hover:text-white" href="#why">Why Me</a>
+      <a href="#contact" class="btn-primary text-white px-4 py-2 rounded-xl font-semibold">Contact Me</a>
+    </div>
+    <button id="menuBtn" class="md:hidden text-slate-200 p-2" aria-label="Open menu" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </nav>
+  <div id="mobileMenu" class="md:hidden hidden mx-3 mt-2 glass rounded-2xl px-5 py-4 flex flex-col gap-3 text-slate-200 font-medium">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a>
+    <a href="#skills">Skills</a><a href="#work">Work</a><a href="#why">Why Me</a>
+    <a href="#contact" class="text-blue-400">Contact Me</a>
+  </div>
+</header>
+
+<!-- ============ 1. HERO ============ -->
+<section id="home" class="relative pt-36 md:pt-44 pb-20 px-5">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="reveal in">
+      <span class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide text-blue-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> AVAILABLE FOR PROJECTS
+      </span>
+      <h1 class="font-sora text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold leading-[1.12] mt-6 text-white">
+        Hi, I'm <span class="grad-text">Muhammad Zohaib</span>
+      </h1>
+      <p class="font-sora text-lg sm:text-xl font-semibold text-slate-300 mt-4">
+        BSCS Student | <span id="typed" class="text-blue-400 caret">Website Developer</span>
+      </p>
+      <h2 class="font-sora text-2xl sm:text-3xl font-bold text-white mt-6">"I Turn Ideas Into Digital Experiences."</h2>
+      <p class="text-slate-400 leading-relaxed mt-4 max-w-lg">
+        I create modern websites, edit engaging videos, design professional CVs and resumes, and produce
+        product promotional advertisements that help businesses and individuals stand out online.
+      </p>
+      <div class="flex flex-wrap gap-4 mt-8">
+        <a href="#work" class="btn-primary text-white font-semibold px-7 py-3.5 rounded-2xl">View My Work</a>
+        <a href="#contact" class="btn-ghost glass font-semibold px-7 py-3.5 rounded-2xl text-white">Contact Me</a>
+      </div>
+      <div class="flex flex-wrap gap-2.5 mt-9 text-[13px] font-medium text-slate-300">
+        <span class="glass rounded-full px-3.5 py-1.5">Website Developer</span>
+        <span class="glass rounded-full px-3.5 py-1.5">Content Creator</span>
+        <span class="glass rounded-full px-3.5 py-1.5">Video Editor</span>
+        <span class="glass rounded-full px-3.5 py-1.5">Product Promotion</span>
+        <span class="glass rounded-full px-3.5 py-1.5">CV &amp; Resume Designer</span>
+      </div>
+    </div>
+    <div class="reveal in flex justify-center md:justify-end">
+      <div class="glow-ring float-slow w-[78%] max-w-sm">
+        <!-- Zohaib's real uploaded photograph — displayed exactly as provided, never regenerated or altered -->
+        <img src="profile.jpg" alt="Portrait of Muhammad Zohaib" class="w-full aspect-[4/5] object-cover rounded-[2rem] ring-1 ring-white/20 shadow-2xl">
+        <div class="glass rounded-2xl px-4 py-3 absolute -bottom-5 -left-5 flex items-center gap-3">
+          <span class="text-2xl" aria-hidden="true">🎓</span>
+          <div class="leading-tight"><p class="font-sora font-bold text-white text-sm">BS Computer Science</p><p class="text-xs text-slate-400">Student &amp; Digital Creator</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. ABOUT ============ -->
+<section id="about" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">ABOUT ME</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">A developer who also <span class="grad-text">thinks like a creator</span></h2>
+    </div>
+    <div class="grid md:grid-cols-5 gap-8 mt-10">
+      <div class="reveal glass card rounded-3xl p-7 md:col-span-3">
+        <p class="text-slate-300 leading-relaxed">
+          I'm Muhammad Zohaib, a BS Computer Science (BSCS) student and digital service provider. Technology is not
+          just my field of study — it's what I genuinely enjoy. I spend my time building websites, editing videos,
+          and designing digital content that helps people and businesses present themselves professionally online.
+        </p>
+        <p class="text-slate-400 leading-relaxed mt-4">
+          My work brings together both sides of the digital world: the technical side — clean, well-structured
+          websites built with solid programming fundamentals — and the creative side — video editing, content
+          creation, digital marketing and product promotion. Whether it's a business website, a promotional video,
+          or a job-ready CV, I focus on understanding exactly what the client needs and delivering work that is
+          clean, modern and ready to use.
+        </p>
+      </div>
+      <div class="reveal md:col-span-2 grid grid-cols-2 gap-4">
+        <div class="glass card rounded-3xl p-5 text-center"><p class="text-3xl" aria-hidden="true">💻</p><p class="font-sora font-bold text-white mt-2 text-sm">Web Development</p><p class="text-xs text-slate-400 mt-1">Modern, responsive websites</p></div>
+        <div class="glass card rounded-3xl p-5 text-center"><p class="text-3xl" aria-hidden="true">🎬</p><p class="font-sora font-bold text-white mt-2 text-sm">Video Editing</p><p class="text-xs text-slate-400 mt-1">Reels, promos &amp; short-form</p></div>
+        <div class="glass card rounded-3xl p-5 text-center"><p class="text-3xl" aria-hidden="true">📣</p><p class="font-sora font-bold text-white mt-2 text-sm">Digital Marketing</p><p class="text-xs text-slate-400 mt-1">Product ads &amp; promotion</p></div>
+        <div class="glass card rounded-3xl p-5 text-center"><p class="text-3xl" aria-hidden="true">🎨</p><p class="font-sora font-bold text-white mt-2 text-sm">Creative Design</p><p class="text-xs text-slate-400 mt-1">CVs, resumes &amp; proposals</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. SERVICES ============ -->
+<section id="services" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">MY SERVICES</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">What I can do <span class="grad-text">for you</span></h2>
+      <p class="text-slate-400 mt-3">Six services, one goal: digital work that looks premium and gets results.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">🌐</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">Website Development</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Business websites, portfolios, landing pages, and e-commerce websites — modern, fast and fully responsive on every device.</p>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">🎬</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">Video Editing</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Engaging social media videos, promotional videos, and short-form content edited to hold attention from the first second.</p>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">📣</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">Product Promotion</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Creative product advertisements and promotional video concepts that present your product in its best light.</p>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">📱</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">Content Creation</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Social media content, reels, and TikTok videos planned and produced for consistent, professional pages.</p>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">📄</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">CV &amp; Resume Design</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Professional, clean, job-ready CVs and resumes that present your skills and experience clearly.</p>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">📑</div>
+        <h3 class="font-sora font-bold text-white text-lg mt-5">Business Proposals</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Structured and professionally formatted proposals that make your ideas clear and convincing.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. SKILLS ============ -->
+<section id="skills" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">TECHNICAL SKILLS</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">My <span class="grad-text">toolkit</span></h2>
+      <p class="text-slate-400 mt-3 max-w-xl">Built on my BS Computer Science studies and hands-on project work. This section is easy to edit as my skills grow.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">🧩</p>
+        <h3 class="font-sora font-bold text-white mt-4">HTML, CSS &amp; JavaScript</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Responsive layouts, modern styling and interactive front-end features for the web.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">HTML5</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">CSS3</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">JavaScript</span></div>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">🗄️</p>
+        <h3 class="font-sora font-bold text-white mt-4">SQL &amp; Database Management</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Designing tables, writing queries and managing data for real applications.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">SQL</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Databases</span></div>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">☕</p>
+        <h3 class="font-sora font-bold text-white mt-4">Java Programming</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Object-oriented programming, logic building and application development in Java.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Java</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">OOP</span></div>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">⚙️</p>
+        <h3 class="font-sora font-bold text-white mt-4">C++ Programming</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Core programming concepts, problem solving and efficient code in C++.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">C++</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Problem Solving</span></div>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">🧠</p>
+        <h3 class="font-sora font-bold text-white mt-4">Data Structures &amp; Algorithms</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Arrays, linked lists, stacks, queues, trees and algorithm design — the foundation of good software.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">DSA</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Algorithms</span></div>
+      </article>
+      <article class="reveal glass card rounded-3xl p-7">
+        <p class="text-3xl" aria-hidden="true">🛠️</p>
+        <h3 class="font-sora font-bold text-white mt-4">Creative Tools</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mt-2">Video editing and design tools used daily for content creation, product ads and document design.</p>
+        <div class="flex flex-wrap gap-2 mt-4 text-xs font-semibold text-blue-300"><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Video Editing</span><span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Design</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. PORTFOLIO / PROJECTS ============ -->
+<!-- HOW TO EDIT: each project is one <article class="proj" data-cat="..."> block below.
+     To add your real work: change the title, description and link, swap the cover
+     <div class="proj-cover"> for an <img src="your-image.jpg">, and delete the "Sample" badge. -->
+<section id="work" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">MY PORTFOLIO</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">Selected <span class="grad-text">work &amp; projects</span></h2>
+      <p class="text-slate-400 mt-3">My real projects and complete sample projects — click any project and it opens in a new page.</p>
+    </div>
+
+    <div class="reveal flex flex-wrap justify-center gap-2.5 mt-10" role="group" aria-label="Filter projects">
+      <button class="filter-btn active glass rounded-full px-5 py-2 text-sm font-semibold" data-filter="all">All Work</button>
+      <button class="filter-btn glass rounded-full px-5 py-2 text-sm font-semibold" data-filter="web">Websites</button>
+      <button class="filter-btn glass rounded-full px-5 py-2 text-sm font-semibold" data-filter="code">Coding</button>
+      
+      
+      <button class="filter-btn glass rounded-full px-5 py-2 text-sm font-semibold" data-filter="cv">CV Designs</button>
+    </div>
+
+    <div id="projGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+
+      <article class="proj reveal glass card rounded-3xl overflow-hidden" data-cat="web">
+        <div class="proj-cover bg-gradient-to-br from-amber-300 via-yellow-400 to-orange-400 text-[#3a2c00]">
+          <span class="text-5xl font-extrabold tracking-tight">FCS</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2"><span class="text-[11px] font-bold tracking-wide rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2.5 py-1">WEBSITE</span><span class="text-[11px] font-bold tracking-wide rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/30 px-2.5 py-1">LIVE PROJECT</span></div>
+          <h3 class="font-sora font-bold text-white text-lg mt-3">Faheem College of Science — Admissions Website</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mt-2">Complete college website with online admission form, student registration, student portal and a management dashboard.</p>
+          <a href="https://zm775487-source.github.io/faheem-college-of-sciences/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-blue-400 font-semibold text-sm mt-4 hover:text-blue-300">Visit Live Site <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="proj reveal glass card rounded-3xl overflow-hidden" data-cat="web">
+        <div class="proj-cover bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 text-white">
+          <span class="text-5xl" aria-hidden="true">🛍️</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2"><span class="text-[11px] font-bold tracking-wide rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2.5 py-1">WEBSITE</span><span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 text-slate-300 ring-1 ring-white/20 px-2.5 py-1">SAMPLE</span></div>
+          <h3 class="font-sora font-bold text-white text-lg mt-3">ShopHub — E-Commerce Landing Page</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mt-2">Sample concept: a modern online-store landing page with product grid, offers section and WhatsApp ordering.</p>
+          <a href="shophub.html" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-blue-400 font-semibold text-sm mt-4 hover:text-blue-300">Open the Project <span aria-hidden="true">→</span></a></a>
+        </div>
+      </article>
+
+      <article class="proj reveal glass card rounded-3xl overflow-hidden" data-cat="code">
+        <div class="proj-cover bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 text-white">
+          <span class="text-5xl" aria-hidden="true">🗄️</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2"><span class="text-[11px] font-bold tracking-wide rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2.5 py-1">CODING</span><span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 text-slate-300 ring-1 ring-white/20 px-2.5 py-1">SAMPLE</span></div>
+          <h3 class="font-sora font-bold text-white text-lg mt-3">Student Management System</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mt-2">Sample concept: a Java + SQL system to add, search and manage student records with a connected database.</p>
+          <a href="student-management.html" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-blue-400 font-semibold text-sm mt-4 hover:text-blue-300">Open the Project <span aria-hidden="true">→</span></a></a>
+        </div>
+      </article>
+
+      <article class="proj reveal glass card rounded-3xl overflow-hidden" data-cat="code">
+        <div class="proj-cover bg-gradient-to-br from-slate-600 via-slate-700 to-slate-900 text-white">
+          <span class="text-5xl" aria-hidden="true">🧠</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2"><span class="text-[11px] font-bold tracking-wide rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2.5 py-1">CODING</span><span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 text-slate-300 ring-1 ring-white/20 px-2.5 py-1">SAMPLE</span></div>
+          <h3 class="font-sora font-bold text-white text-lg mt-3">DSA Practice Programs — C++</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mt-2">Sample concept: a collection of data-structures programs — stacks, queues, linked lists and sorting algorithms in C++.</p>
+          <a href="dsa.html" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-blue-400 font-semibold text-sm mt-4 hover:text-blue-300">Open the Project <span aria-hidden="true">→</span></a></a>
+        </div>
+      </article>
+
+
+      <article class="proj reveal glass card rounded-3xl overflow-hidden" data-cat="cv">
+        <div class="proj-cover bg-gradient-to-br from-cyan-500 via-sky-600 to-blue-700 text-white">
+          <span class="text-5xl" aria-hidden="true">📄</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2"><span class="text-[11px] font-bold tracking-wide rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2.5 py-1">CV DESIGN</span><span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 text-slate-300 ring-1 ring-white/20 px-2.5 py-1">SAMPLE</span></div>
+          <h3 class="font-sora font-bold text-white text-lg mt-3">Modern Professional CV Design</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mt-2">Sample concept: a clean, modern one-page CV layout with a clear skills section and professional summary.</p>
+          <a href="cv-design.html" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-blue-400 font-semibold text-sm mt-4 hover:text-blue-300">Open the Project <span aria-hidden="true">→</span></a></a>
+        </div>
+      </article>
+    </div>
+    <p class="reveal text-center text-slate-500 text-sm mt-8">More real projects will be added here as they are completed.</p>
+  </div>
+</section>
+
+<!-- ============ 6. WHY WORK WITH ME ============ -->
+<section id="why" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">WHY WORK WITH ME</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">Work with someone who <span class="grad-text">cares about the details</span></h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">💡</p><h3 class="font-sora font-bold text-white mt-4">Creative Thinking</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Fresh ideas for designs, videos and campaigns — not copy-paste templates.</p></article>
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">🔍</p><h3 class="font-sora font-bold text-white mt-4">Attention to Detail</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Spacing, wording, colours, cuts — the small things that make work look professional are checked carefully.</p></article>
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">💬</p><h3 class="font-sora font-bold text-white mt-4">Responsive Communication</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Clear, friendly communication on WhatsApp and email, with regular updates while your work is in progress.</p></article>
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">⏱️</p><h3 class="font-sora font-bold text-white mt-4">Reliable Delivery</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Agreed work delivered as promised, and if anything needs more time, you hear it from me early — not at the deadline.</p></article>
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">🎯</p><h3 class="font-sora font-bold text-white mt-4">Focused on Your Requirements</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Every project starts with your requirements. The design, content and features follow what you actually need.</p></article>
+      <article class="reveal glass card rounded-3xl p-7"><p class="text-3xl" aria-hidden="true">🤝</p><h3 class="font-sora font-bold text-white mt-4">One Person, Full Service</h3><p class="text-slate-400 text-sm leading-relaxed mt-2">Website, videos, ads and documents from one person — consistent style across everything your business publishes.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. CONTACT ============ -->
+<section id="contact" class="px-5 py-20">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <p class="font-sora text-sm font-bold tracking-[.25em] text-blue-400">CONTACT</p>
+      <h2 class="font-sora text-3xl sm:text-4xl font-bold text-white mt-3">Let's build something <span class="grad-text">great together</span></h2>
+      <p class="text-slate-400 mt-3">Tell me about your project — a website, a video, an ad, or a CV — and I'll get back to you.</p>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-8 mt-12">
+      <div class="reveal md:col-span-2 flex flex-col gap-5">
+        <a href="mailto:zm775487@gmail.com" class="glass card rounded-3xl p-6 flex items-center gap-4">
+          <span class="w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center text-xl bg-gradient-to-br from-blue-500/25 to-violet-500/25 ring-1 ring-blue-400/30" aria-hidden="true">✉️</span>
+          <span><span class="block text-xs font-bold tracking-wide text-slate-400">EMAIL ME AT</span><span class="block font-sora font-semibold text-white mt-0.5 break-all">zm775487@gmail.com</span></span>
+        </a>
+        <a href="https://wa.me/923713109133?text=Hi%20Zohaib!%20I%20saw%20your%20portfolio%20and%20I%27m%20interested%20in%20your%20services." target="_blank" rel="noopener" class="glass card rounded-3xl p-6 flex items-center gap-4">
+          <span class="w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center text-xl bg-gradient-to-br from-emerald-500/25 to-teal-500/25 ring-1 ring-emerald-400/30" aria-hidden="true">💬</span>
+          <span><span class="block text-xs font-bold tracking-wide text-slate-400">PHONE / WHATSAPP</span><span class="block font-sora font-semibold text-white mt-0.5">0371 3109133</span></span>
+        </a>
+        <a href="https://wa.me/923713109133?text=Hi%20Zohaib!%20I%20saw%20your%20portfolio%20and%20I%27m%20interested%20in%20your%20services." target="_blank" rel="noopener" class="btn-primary rounded-3xl p-5 text-center font-sora font-bold text-white">Chat on WhatsApp</a>
+        <div class="glass rounded-3xl p-6">
+          <p class="font-sora font-semibold text-white">Prefer email?</p>
+          <p class="text-slate-400 text-sm leading-relaxed mt-1.5">Use the form, or write to me directly at <a class="text-blue-400 hover:text-blue-300 font-medium" href="mailto:zm775487@gmail.com">zm775487@gmail.com</a>. I usually reply within a day.</p>
+        </div>
+      </div>
+
+      <form id="contactForm" class="reveal glass rounded-3xl p-7 md:col-span-3" novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="cf-name" class="block text-sm font-semibold text-slate-300 mb-2">Your Name *</label>
+            <input id="cf-name" name="name" type="text" required placeholder="e.g. Ahmed Khan" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 transition">
+          </div>
+          <div>
+            <label for="cf-email" class="block text-sm font-semibold text-slate-300 mb-2">Your Email *</label>
+            <input id="cf-email" name="email" type="email" required placeholder="you@example.com" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 transition">
+          </div>
+        </div>
+        <div class="mt-5">
+          <label for="cf-subject" class="block text-sm font-semibold text-slate-300 mb-2">Subject *</label>
+          <input id="cf-subject" name="subject" type="text" required placeholder="e.g. I need a business website" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 transition">
+        </div>
+        <div class="mt-5">
+          <label for="cf-message" class="block text-sm font-semibold text-slate-300 mb-2">Message *</label>
+          <textarea id="cf-message" name="message" rows="5" required placeholder="Tell me about your project..." class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 transition resize-y"></textarea>
+        </div>
+        <p id="formError" class="hidden text-rose-400 text-sm font-medium mt-4">Please fill in all fields with a valid email address.</p>
+        <button type="submit" class="btn-primary w-full sm:w-auto text-white font-sora font-bold px-8 py-3.5 rounded-2xl mt-6">Send Message on WhatsApp</button>
+        <p class="text-slate-500 text-xs leading-relaxed mt-4">
+          How this form works: it opens WhatsApp with your message ready to send to Muhammad Zohaib — no account or
+          backend needed, so it works right now. It can later be connected to an email service (such as EmailJS or
+          Formspree) if you prefer messages to arrive by email instead.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. FOOTER ============ -->
+<footer class="px-5 pb-10 pt-4">
+  <div class="max-w-6xl mx-auto glass rounded-3xl px-7 py-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="#home" class="flex items-center gap-2.5">
+        <img src="profile.jpg" alt="Muhammad Zohaib" class="w-9 h-9 rounded-full object-cover ring-2 ring-blue-500/60">
+        <span class="font-sora font-bold text-white">Muhammad <span class="grad-text">Zohaib</span></span>
+      </a>
+      <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-400" aria-label="Footer navigation">
+        <a href="#about" class="hover:text-white">About</a>
+        <a href="#services" class="hover:text-white">Services</a>
+        <a href="#skills" class="hover:text-white">Skills</a>
+        <a href="#work" class="hover:text-white">Work</a>
+        <a href="#contact" class="hover:text-white">Contact</a>
+      </nav>
+      <!-- Social links: replace the # links with your real profile URLs when ready -->
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/zm775487-source" target="_blank" rel="noopener" aria-label="GitHub profile" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-white text-slate-300 font-sora font-bold">Gh</a>
+        <a href="#" aria-label="LinkedIn profile (add link later)" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-white text-slate-300 font-sora font-bold">in</a>
+        <a href="#" aria-label="TikTok profile (add link later)" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-white text-slate-300 font-sora font-bold">Tk</a>
+        <a href="#" aria-label="Instagram profile (add link later)" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-white text-slate-300 font-sora font-bold">Ig</a>
+        <a href="#" aria-label="Facebook profile (add link later)" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-white text-slate-300 font-sora font-bold">Fb</a>
+      </div>
+    </div>
+    <div class="border-t border-white/10 mt-7 pt-6 text-center">
+      <p class="text-slate-400 text-sm">© 2026 Muhammad Zohaib. All Rights Reserved.</p>
+      <p class="text-slate-500 text-xs mt-1.5">Website Developer • Content Creator • Video Editor • Product Promotion • CV &amp; Resume Designer</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn'), mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('hidden');
+  menuBtn.setAttribute('aria-expanded', String(!open));
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+// Typing effect for hero roles
+const roles = ['Website Developer','Content Creator','Video Editor','Product Promotion Creator','CV & Resume Designer'];
+const typed = document.getElementById('typed');
+let ri = 0, ci = roles[0].length, deleting = false;
+(function tick(){
+  const word = roles[ri];
+  if (!deleting) { ci++; if (ci >= word.length) { deleting = true; return setTimeout(tick, 1600); } }
+  else { ci--; if (ci <= 0) { deleting = false; ri = (ri + 1) % roles.length; } }
+  typed.textContent = roles[ri].slice(0, Math.max(ci, 0)) || roles[ri][0];
+  setTimeout(tick, deleting ? 38 : 75);
+})();
+
+// Scroll reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+// Active nav link on scroll
+const secs = ['home','about','services','skills','work','why','contact'];
+const navLinks = document.querySelectorAll('header .nav-link');
+const ioNav = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+}), { rootMargin: '-40% 0px -55% 0px' });
+secs.forEach(id => { const s = document.getElementById(id); if (s) ioNav.observe(s); });
+
+// Portfolio filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projects = document.querySelectorAll('.proj');
+filterBtns.forEach(btn => btn.addEventListener('click', () => {
+  filterBtns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  projects.forEach(p => {
+    const show = f === 'all' || p.dataset.cat === f;
+    p.style.display = show ? '' : 'none';
+    if (show) { p.classList.remove('in'); requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('in'))); }
+  });
+}));
+
+// Contact form -> opens WhatsApp with the message pre-filled (works with no backend)
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+  const err = document.getElementById('formError');
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!name || !validEmail || !subject || !message) { err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  const text = 'New message from my portfolio website:%0A%0A' +
+    'Name: ' + encodeURIComponent(name) + '%0A' +
+    'Email: ' + encodeURIComponent(email) + '%0A' +
+    'Subject: ' + encodeURIComponent(subject) + '%0A%0A' +
+    encodeURIComponent(message);
+  window.open('https://wa.me/923713109133?text=' + text, '_blank');
+});
+</script>
+</body>
+</html>

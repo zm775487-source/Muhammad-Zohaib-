@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopHub — Sample E-Commerce Store | Project by Muhammad Zohaib</title>
+<meta name="description" content="Sample e-commerce landing page project by Muhammad Zohaib — demo online store with product grid and cart counter.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>body{font-family:Inter,sans-serif;background:#05070f}.font-sora{font-family:Sora,sans-serif}.glass{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(12px)}.card{transition:transform .35s,box-shadow .35s}.card:hover{transform:translateY(-5px);box-shadow:0 20px 40px -16px rgba(47,123,255,.35)}</style>
+</head>
+<body class="text-slate-200 antialiased">
+<header class="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between">
+  <a href="index.html#work" class="text-sm font-semibold text-blue-400 hover:text-blue-300">← Back to Portfolio</a>
+  <span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 ring-1 ring-white/20 px-3 py-1">SAMPLE PROJECT — DEMO STORE</span>
+</header>
+
+<section class="max-w-6xl mx-auto px-5 pt-6 pb-10 text-center">
+  <p class="font-sora text-4xl sm:text-5xl font-extrabold text-white">Shop<span class="text-blue-500">Hub</span></p>
+  <p class="text-slate-400 mt-3 max-w-xl mx-auto">A sample e-commerce landing page — the kind of online store I can build for your business. Browse products, add to cart, and order on WhatsApp.</p>
+  <div class="mt-6 flex justify-center gap-3">
+    <a href="#products" class="rounded-xl px-6 py-3 font-semibold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Shop Now</a>
+    <button class="glass rounded-xl px-6 py-3 font-semibold">Cart 🛒 <span id="cartCount" class="text-blue-400 font-bold">0</span></button>
+  </div>
+  <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto mt-10 text-center text-xs sm:text-sm">
+    <div class="glass rounded-2xl py-3 px-2">🚚<br><span class="font-semibold text-white">Fast Delivery</span></div>
+    <div class="glass rounded-2xl py-3 px-2">💵<br><span class="font-semibold text-white">Cash on Delivery</span></div>
+    <div class="glass rounded-2xl py-3 px-2">✅<br><span class="font-semibold text-white">Quality Checked</span></div>
+  </div>
+</section>
+
+<section id="products" class="max-w-6xl mx-auto px-5 pb-16">
+  <h2 class="font-sora text-2xl font-bold text-white mb-6">Featured Products</h2>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5" id="grid"></div>
+</section>
+
+<footer class="max-w-6xl mx-auto px-5 pb-10 text-center text-slate-500 text-sm">
+  <p>ShopHub is a <strong class="text-slate-300">sample demo store</strong> built by Muhammad Zohaib to show e-commerce design. Products and prices are examples only.</p>
+  <p class="mt-2">Want a real store like this? <a class="text-blue-400 font-semibold" href="index.html#contact">Contact Zohaib →</a></p>
+</footer>
+
+<script>
+const products = [
+  {n:'Wireless Earbuds Pro', p:3499, e:'🎧', g:'from-blue-600 to-indigo-700', tag:'Best Seller'},
+  {n:'Smart Watch Series 5', p:5999, e:'⌚', g:'from-slate-600 to-slate-900', tag:'New'},
+  {n:'Men\'s Casual Shoes', p:2799, e:'👟', g:'from-emerald-500 to-teal-700', tag:''},
+  {n:'Ladies Handbag', p:4299, e:'👜', g:'from-pink-500 to-rose-600', tag:'Popular'},
+  {n:'Bluetooth Speaker', p:2450, e:'🔊', g:'from-violet-500 to-purple-700', tag:''},
+  {n:'Sunglasses — UV Protect', p:1299, e:'🕶️', g:'from-amber-400 to-orange-500', tag:'Sale'},
+  {n:'Gaming Mouse RGB', p:1899, e:'🖱️', g:'from-cyan-500 to-blue-700', tag:''},
+  {n:'Skincare Gift Set', p:3150, e:'🧴', g:'from-fuchsia-500 to-pink-600', tag:'Popular'}
+];
+let cart = 0;
+const grid = document.getElementById('grid');
+products.forEach(x => {
+  const d = document.createElement('article');
+  d.className = 'glass card rounded-3xl overflow-hidden';
+  d.innerHTML = `<div class="h-36 flex items-center justify-center text-6xl bg-gradient-to-br ${x.g}">${x.e}</div>
+    <div class="p-4">
+      ${x.tag ? `<span class="text-[10px] font-bold rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2 py-0.5">${x.tag.toUpperCase()}</span>` : ''}
+      <h3 class="font-sora font-bold text-white mt-2 text-[15px]">${x.n}</h3>
+      <p class="text-blue-400 font-bold mt-1">Rs ${x.p.toLocaleString()}</p>
+      <button class="add mt-3 w-full rounded-xl py-2.5 text-sm font-semibold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Add to Cart</button>
+    </div>`;
+  d.querySelector('.add').addEventListener('click', () => { cart++; document.getElementById('cartCount').textContent = cart; });
+  grid.appendChild(d);
+});
+</script>
+</body>
+</html>
