@@ -4,8 +4,8 @@ A premium, fully responsive one-page portfolio: dark black/navy theme, electric 
 purple accents, glassmorphism cards, subtle glow effects and smooth scroll animations.
 
 ## Files
-- `index.html` — the complete website (all sections, styles and scripts in one file)
-- `profile.jpg` — Zohaib's real photograph, used exactly as provided (never edit the face)
+- `index.html` — the complete website (all sections, styles and scripts in one file). Zohaib's real photograph is embedded inside it exactly as provided — never edit the face
+- `profile.jpg` — the original photograph file, kept for your records
 
 ## Sections
 1. Hero — name, roles (with typing effect), headline, View My Work / Contact Me buttons
@@ -33,9 +33,7 @@ Just open `index.html` in any browser. (Internet is needed for the Tailwind CDN 
 Google Fonts; everything else is in the file.)
 
 ## Deploy free (GitHub Pages)
-1. Create a GitHub repository (e.g. `portfolio`) and upload `index.html` + `profile.jpg`.
-2. Push the same files to a branch named `gh-pages` (or set Settings → Pages → branch).
-3. Your site goes live at `https://<username>.github.io/<repo>/`.
+ALREADY LIVE at https://zm775487-source.github.io/Muhammad-Zohaib-/ (repo: zm775487-source/Muhammad-Zohaib-, files on both `main` and `gh-pages` branches — keep both in sync when editing).
 
 ## Edit quick reference
 - Name / roles / headline: search the file for "Muhammad Zohaib" and "I Turn Ideas"
