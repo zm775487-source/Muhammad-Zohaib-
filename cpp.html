@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Game — C++ | Project by Muhammad Zohaib</title>
+<meta name="description" content="Complete C++ project by Muhammad Zohaib — the classic Snake game built in C++ with arrays, functions and game loop logic. Play it live in the browser and read the full source code.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>body{font-family:Inter,sans-serif;background:#05070f}.font-sora{font-family:Sora,sans-serif}code,pre{font-family:'JetBrains Mono',monospace}.glass{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(12px)}pre{overflow-x:auto}canvas{background:#070b1d;border-radius:1rem;touch-action:none}</style>
+</head>
+<body class="text-slate-200 antialiased">
+<header class="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between">
+  <a href="index.html#work" class="text-sm font-semibold text-blue-400 hover:text-blue-300">← Back to Portfolio</a>
+  <span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 ring-1 ring-white/20 px-3 py-1">COMPLETE PROJECT — C++</span>
+</header>
+
+<section class="max-w-6xl mx-auto px-5 pt-4 pb-8">
+  <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-white">Snake Game <span class="text-blue-400">— C++</span></h1>
+  <p class="text-slate-400 mt-3 max-w-2xl">A complete C++ project: the classic Snake game built with arrays, functions, a game loop and collision logic — no graphics library, pure programming fundamentals. Play the same game live below (identical logic to the C++ code), then read the full source code.</p>
+  <div class="flex flex-wrap gap-2 mt-5 text-xs font-semibold text-blue-300">
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">C++</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Game Loop</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Arrays &amp; Functions</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Collision Detection</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Score System</span>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-14">
+  <div class="glass rounded-3xl p-6 text-center">
+    <div class="flex flex-wrap items-center justify-between gap-3 max-w-md mx-auto">
+      <h2 class="font-sora font-bold text-white text-lg">🐍 Play It Live</h2>
+      <p class="font-sora font-bold text-white">Score: <span id="score" class="text-blue-400">0</span></p>
+      <button id="startBtn" class="rounded-xl px-4 py-2 text-sm font-semibold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Start / Restart</button>
+    </div>
+    <canvas id="game" width="400" height="400" class="mx-auto mt-5 w-full max-w-[400px] h-auto"></canvas>
+    <p id="msg" class="text-slate-400 text-sm mt-3">Use arrow keys (desktop) or the buttons below (mobile). Eat the food, don't hit the walls or yourself!</p>
+    <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto mt-4 sm:hidden">
+      <span></span><button class="dbtn glass rounded-xl py-3 text-lg" data-dir="up">⬆️</button><span></span>
+      <button class="dbtn glass rounded-xl py-3 text-lg" data-dir="left">⬅️</button><button class="dbtn glass rounded-xl py-3 text-lg" data-dir="down">⬇️</button><button class="dbtn glass rounded-xl py-3 text-lg" data-dir="right">➡️</button>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-14">
+  <h2 class="font-sora text-2xl font-bold text-white">How the C++ Program Works</h2>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 text-center">
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Setup()</p><p class="text-slate-400 text-sm mt-1">Places the snake in the centre and drops food at a random position</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Input()</p><p class="text-slate-400 text-sm mt-1">Reads W A S D keys without stopping the game (kbhit / getch)</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Logic()</p><p class="text-slate-400 text-sm mt-1">Moves the tail, grows on food, checks wall &amp; self collisions</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Draw()</p><p class="text-slate-400 text-sm mt-1">Redraws the board every frame — head O, body o, food F, walls #</p></div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-16">
+  <div class="glass rounded-3xl p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="font-sora font-bold text-white text-lg">📄 Full Source Code — snake.cpp</h2>
+      <button id="copyBtn" class="glass rounded-xl px-4 py-2 text-sm font-semibold">Copy Code</button>
+    </div>
+    <pre class="text-[12.5px] leading-relaxed text-slate-300 bg-black/40 rounded-2xl p-4 mt-4"><code id="srcCode">// ============================================================
+//  Snake Game - Complete C++ Project
+//  Concepts: arrays, functions, loops, game loop,
+//            random numbers, collision detection
+//  Controls: W A S D to move, X to exit
+// ============================================================
+#include &lt;iostream&gt;
+#include &lt;conio.h&gt;      // kbhit(), getch()  (Windows / Dev-C++)
+#include &lt;windows.h&gt;    // Sleep()
+#include &lt;cstdlib&gt;      // rand()
+using namespace std;
+
+const int WIDTH = 20, HEIGHT = 20;
+int x, y, foodX, foodY, score;
+int tailX[100], tailY[100], tailLen;
+enum Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
+Direction dir;
+bool gameOver;
+
+void Setup() {
+    gameOver = false;
+    dir = STOP;
+    x = WIDTH / 2;  y = HEIGHT / 2;          // snake in centre
+    foodX = rand() % WIDTH;                  // random food
+    foodY = rand() % HEIGHT;
+    score = 0;  tailLen = 0;
+}
+
+void Draw() {
+    system("cls");
+    for (int i = 0; i &lt; WIDTH + 2; i++) cout &lt;&lt; "#";
+    cout &lt;&lt; "\n";
+    for (int i = 0; i &lt; HEIGHT; i++) {
+        for (int j = 0; j &lt; WIDTH; j++) {
+            if (j == 0) cout &lt;&lt; "#";
+            if (i == y &amp;&amp; j == x) cout &lt;&lt; "O";            // head
+            else if (i == foodY &amp;&amp; j == foodX) cout &lt;&lt; "F"; // food
+            else {
+                bool tailPart = false;
+                for (int k = 0; k &lt; tailLen; k++)
+                    if (tailX[k] == j &amp;&amp; tailY[k] == i) {
+                        cout &lt;&lt; "o"; tailPart = true;
+                    }
+                if (!tailPart) cout &lt;&lt; " ";
+            }
+            if (j == WIDTH - 1) cout &lt;&lt; "#";
+        }
+        cout &lt;&lt; "\n";
+    }
+    for (int i = 0; i &lt; WIDTH + 2; i++) cout &lt;&lt; "#";
+    cout &lt;&lt; "\nScore: " &lt;&lt; score &lt;&lt; "\n";
+}
+
+void Input() {
+    if (_kbhit()) {
+        switch (_getch()) {
+            case 'a': dir = LEFT;  break;
+            case 'd': dir = RIGHT; break;
+            case 'w': dir = UP;    break;
+            case 's': dir = DOWN;  break;
+            case 'x': gameOver = true; break;
+        }
+    }
+}
+
+void Logic() {
+    // move the tail: each segment follows the one before it
+    int prevX = tailX[0], prevY = tailY[0], tempX, tempY;
+    tailX[0] = x;  tailY[0] = y;
+    for (int i = 1; i &lt; tailLen; i++) {
+        tempX = tailX[i];  tempY = tailY[i];
+        tailX[i] = prevX;  tailY[i] = prevY;
+        prevX = tempX;     prevY = tempY;
+    }
+    // move the head
+    switch (dir) {
+        case LEFT:  x--; break;
+        case RIGHT: x++; break;
+        case UP:    y--; break;
+        case DOWN:  y++; break;
+        default: break;
+    }
+    // wall collision
+    if (x &lt; 0 || x &gt;= WIDTH || y &lt; 0 || y &gt;= HEIGHT) gameOver = true;
+    // self collision
+    for (int i = 0; i &lt; tailLen; i++)
+        if (tailX[i] == x &amp;&amp; tailY[i] == y) gameOver = true;
+    // food eaten: grow + new food + score
+    if (x == foodX &amp;&amp; y == foodY) {
+        score += 10;
+        tailLen++;
+        foodX = rand() % WIDTH;
+        foodY = rand() % HEIGHT;
+    }
+}
+
+int main() {
+    Setup();
+    while (!gameOver) {
+        Draw();
+        Input();
+        Logic();
+        Sleep(80);          // game speed
+    }
+    cout &lt;&lt; "Game Over! Final Score: " &lt;&lt; score &lt;&lt; "\n";
+    return 0;
+}</code></pre>
+    <p class="text-slate-500 text-xs mt-3">Compile on Windows with Dev-C++ / Code::Blocks, or: <code class="text-blue-300">g++ snake.cpp -o snake</code></p>
+  </div>
+</section>
+
+<footer class="max-w-6xl mx-auto px-5 pb-10 text-center text-slate-500 text-sm">
+  <p>Complete C++ project by Muhammad Zohaib. Need a C++ project or assignment help? <a class="text-blue-400 font-semibold" href="index.html#contact">Contact Zohaib →</a></p>
+</footer>
+
+<script>
+const cv = document.getElementById('game'), ctx = cv.getContext('2d');
+const N = 20, CELL = 20;
+let snake, food, dir, nextDir, score, timer = null, alive = false;
+function reset(){
+  snake = [{x:10, y:10}]; dir = {x:0, y:0}; nextDir = {x:0, y:0}; score = 0; alive = true;
+  placeFood(); updateScore(); draw();
+  document.getElementById('msg').textContent = 'Game on! Eat the food 🍎';
+  if (timer) clearInterval(timer);
+  timer = setInterval(step, 110);
+}
+function placeFood(){
+  do { food = {x: Math.floor(Math.random()*N), y: Math.floor(Math.random()*N)}; }
+  while (snake.some(s => s.x === food.x && s.y === food.y));
+}
+function step(){
+  dir = nextDir;
+  if (dir.x === 0 && dir.y === 0) return;
+  const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+  if (head.x < 0 || head.x >= N || head.y < 0 || head.y >= N || snake.some(s => s.x === head.x && s.y === head.y)) {
+    alive = false; clearInterval(timer);
+    document.getElementById('msg').textContent = '💀 Game Over! Final score: ' + score + ' — press Start to play again.';
+    return;
+  }
+  snake.unshift(head);
+  if (head.x === food.x && head.y === food.y) { score += 10; updateScore(); placeFood(); }
+  else snake.pop();
+  draw();
+}
+function draw(){
+  ctx.fillStyle = '#070b1d'; ctx.fillRect(0, 0, 400, 400);
+  ctx.strokeStyle = 'rgba(255,255,255,.05)';
+  for (let i = 1; i < N; i++) {
+    ctx.beginPath(); ctx.moveTo(i*CELL, 0); ctx.lineTo(i*CELL, 400); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, i*CELL); ctx.lineTo(400, i*CELL); ctx.stroke();
+  }
+  ctx.fillStyle = '#f43f5e';
+  ctx.beginPath(); ctx.arc(food.x*CELL + 10, food.y*CELL + 10, 8, 0, Math.PI*2); ctx.fill();
+  snake.forEach((s, i) => {
+    ctx.fillStyle = i === 0 ? '#4ade80' : '#22c55e';
+    ctx.fillRect(s.x*CELL + 1.5, s.y*CELL + 1.5, CELL - 3, CELL - 3);
+  });
+}
+function updateScore(){ document.getElementById('score').textContent = score; }
+function setDir(name){
+  const d = {left:{x:-1,y:0}, right:{x:1,y:0}, up:{x:0,y:-1}, down:{x:0,y:1}}[name];
+  if (!d) return;
+  if (snake.length > 1 && d.x === -dir.x && d.y === -dir.y) return; // no instant reverse
+  nextDir = d;
+  if (!timer && !alive) reset();
+}
+document.addEventListener('keydown', e => {
+  const map = {ArrowLeft:'left', ArrowRight:'right', ArrowUp:'up', ArrowDown:'down'};
+  if (map[e.key]) { e.preventDefault(); if (!alive && !timer) reset(); setDir(map[e.key]); }
+});
+document.querySelectorAll('.dbtn').forEach(b => b.addEventListener('click', () => { if (!alive && !timer) reset(); setDir(b.dataset.dir); }));
+document.getElementById('startBtn').addEventListener('click', reset);
+document.getElementById('copyBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('srcCode').innerText).then(() => {
+    const b = document.getElementById('copyBtn'); b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy Code', 1800);
+  });
+});
+snake = [{x:10, y:10}]; food = {x:14, y:10}; score = 0; draw();
+</script>
+</body>
+</html>

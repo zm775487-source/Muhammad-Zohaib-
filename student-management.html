@@ -45,7 +45,8 @@
     </select>
     <label class="block text-sm font-semibold mt-4 mb-1.5">Phone</label>
     <input id="f-phone" placeholder="03xx-xxxxxxx" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-white placeholder:text-slate-500">
-    <button class="w-full mt-6 rounded-xl py-3 font-sora font-bold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Add Student</button>
+    <button id="submitBtn" class="w-full mt-6 rounded-xl py-3 font-sora font-bold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Add Student</button>
+    <button type="button" id="cancelEdit" class="hidden w-full mt-2 rounded-xl py-2.5 font-semibold text-slate-300 glass">Cancel Edit</button>
     <p class="text-slate-500 text-xs mt-3">Demo data is sample-only and resets when the page reloads — the real system saves everything permanently in SQL.</p>
   </form>
 
@@ -66,8 +67,61 @@
   </div>
 </section>
 
+<section class="max-w-6xl mx-auto px-5 pb-16">
+  <h2 class="font-sora text-2xl font-bold text-white">Project Source Code</h2>
+  <p class="text-slate-400 mt-2 max-w-2xl text-sm">The complete system is built in Java with an SQL database. Key parts of the real code:</p>
+  <div class="grid md:grid-cols-2 gap-6 mt-6 items-start">
+    <div class="glass rounded-3xl p-6">
+      <h3 class="font-sora font-bold text-white">Student Class + Add Record (Java)</h3>
+      <pre class="text-[12.5px] leading-relaxed text-slate-300 bg-black/40 rounded-2xl p-4 mt-4 overflow-x-auto"><code>// Student.java — model class
+public class Student {
+    private String roll, name, program, phone;
+    public Student(String roll, String name,
+                   String program, String phone) {
+        this.roll = roll;  this.name = name;
+        this.program = program; this.phone = phone;
+    }
+    // getters...
+    public String getRoll() { return roll; }
+    public String getName() { return name; }
+}
+
+// Add a student using JDBC (prepared statement)
+String sql = "INSERT INTO students VALUES (?,?,?,?)";
+PreparedStatement ps = con.prepareStatement(sql);
+ps.setString(1, s.getRoll());
+ps.setString(2, s.getName());
+ps.setString(3, s.getProgram());
+ps.setString(4, s.getPhone());
+ps.executeUpdate();   // record saved in SQL</code></pre>
+    </div>
+    <div class="glass rounded-3xl p-6">
+      <h3 class="font-sora font-bold text-white">Database (SQL)</h3>
+      <pre class="text-[12.5px] leading-relaxed text-slate-300 bg-black/40 rounded-2xl p-4 mt-4 overflow-x-auto"><code>-- students table
+CREATE TABLE students (
+    roll_no   VARCHAR(15) PRIMARY KEY,
+    full_name VARCHAR(60) NOT NULL,
+    program   VARCHAR(40),
+    phone     VARCHAR(15)
+);
+
+-- search a student
+SELECT * FROM students
+WHERE full_name LIKE '%Ali%';
+
+-- update a record
+UPDATE students SET phone = '0300-1112223'
+WHERE roll_no = 'BSCS-101';
+
+-- delete a record
+DELETE FROM students
+WHERE roll_no = 'BSCS-101';</code></pre>
+    </div>
+  </div>
+</section>
+
 <footer class="max-w-6xl mx-auto px-5 pb-10 text-center text-slate-500 text-sm">
-  <p>Sample project by Muhammad Zohaib — Java + SQL. Want a system like this for your school or business? <a class="text-blue-400 font-semibold" href="index.html#contact">Contact Zohaib →</a></p>
+  <p>Complete project by Muhammad Zohaib — Java + SQL. Want a system like this for your school or business? <a class="text-blue-400 font-semibold" href="index.html#contact">Contact Zohaib →</a></p>
 </footer>
 
 <script>
@@ -78,6 +132,7 @@ let students = [
   {roll:'ICS-301', name:'Sample Student Four', cls:'ICS', phone:'0300-0000004'}
 ];
 const rows = document.getElementById('rows');
+let editingRoll = null;
 function render(){
   const q = document.getElementById('search').value.trim().toLowerCase();
   const list = students.filter(s => !q || (s.name+' '+s.roll+' '+s.cls).toLowerCase().includes(q));
@@ -86,20 +141,47 @@ function render(){
     const tr = document.createElement('tr');
     tr.className = 'border-b border-white/5';
     tr.innerHTML = `<td class="py-3 pr-3 font-semibold text-blue-300">${s.roll}</td><td class="py-3 pr-3 text-white">${s.name}</td><td class="py-3 pr-3">${s.cls}</td><td class="py-3 pr-3">${s.phone || '—'}</td>
-      <td class="py-3"><button class="del text-rose-400 font-semibold hover:text-rose-300" data-roll="${s.roll}">Delete</button></td>`;
+      <td class="py-3 whitespace-nowrap"><button class="edit text-blue-400 font-semibold hover:text-blue-300 mr-3" data-roll="${s.roll}">Edit</button><button class="del text-rose-400 font-semibold hover:text-rose-300" data-roll="${s.roll}">Delete</button></td>`;
     rows.appendChild(tr);
   });
   document.getElementById('empty').classList.toggle('hidden', list.length > 0);
   document.getElementById('statTotal').textContent = students.length;
   document.getElementById('statClasses').textContent = new Set(students.map(s => s.cls)).size;
   document.getElementById('statShown').textContent = list.length;
-  rows.querySelectorAll('.del').forEach(b => b.addEventListener('click', () => { students = students.filter(s => s.roll !== b.dataset.roll); render(); }));
+  rows.querySelectorAll('.del').forEach(b => b.addEventListener('click', () => { students = students.filter(s => s.roll !== b.dataset.roll); if (editingRoll === b.dataset.roll) stopEdit(); render(); }));
+  rows.querySelectorAll('.edit').forEach(b => b.addEventListener('click', () => {
+    const s = students.find(x => x.roll === b.dataset.roll);
+    if (!s) return;
+    editingRoll = s.roll;
+    document.getElementById('f-name').value = s.name;
+    document.getElementById('f-roll').value = s.roll;
+    document.getElementById('f-class').value = s.cls;
+    document.getElementById('f-phone').value = s.phone || '';
+    document.getElementById('submitBtn').textContent = 'Update Student';
+    document.getElementById('cancelEdit').classList.remove('hidden');
+    document.getElementById('f-name').focus();
+  }));
 }
+function stopEdit(){
+  editingRoll = null;
+  document.getElementById('addForm').reset();
+  document.getElementById('submitBtn').textContent = 'Add Student';
+  document.getElementById('cancelEdit').classList.add('hidden');
+}
+document.getElementById('cancelEdit').addEventListener('click', stopEdit);
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('addForm').addEventListener('submit', e => {
   e.preventDefault();
-  students.push({ roll: document.getElementById('f-roll').value.trim(), name: document.getElementById('f-name').value.trim(), cls: document.getElementById('f-class').value, phone: document.getElementById('f-phone').value.trim() });
-  e.target.reset(); render();
+  const data = { roll: document.getElementById('f-roll').value.trim(), name: document.getElementById('f-name').value.trim(), cls: document.getElementById('f-class').value, phone: document.getElementById('f-phone').value.trim() };
+  if (editingRoll) {
+    const s = students.find(x => x.roll === editingRoll);
+    if (s) Object.assign(s, data);
+    stopEdit();
+  } else {
+    students.push(data);
+    e.target.reset();
+  }
+  render();
 });
 render();
 </script>
