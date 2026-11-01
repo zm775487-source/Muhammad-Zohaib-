@@ -24,6 +24,7 @@
     <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Arrays &amp; Functions</span>
     <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Collision Detection</span>
     <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Score System</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Flicker-Free Rendering</span>
   </div>
 </section>
 
@@ -49,7 +50,7 @@
     <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Setup()</p><p class="text-slate-400 text-sm mt-1">Places the snake in the centre and drops food at a random position</p></div>
     <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Input()</p><p class="text-slate-400 text-sm mt-1">Reads W A S D keys without stopping the game (kbhit / getch)</p></div>
     <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Logic()</p><p class="text-slate-400 text-sm mt-1">Moves the tail, grows on food, checks wall &amp; self collisions</p></div>
-    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Draw()</p><p class="text-slate-400 text-sm mt-1">Redraws the board every frame — head O, body o, food F, walls #</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Draw()</p><p class="text-slate-400 text-sm mt-1">Draws into a screen buffer and updates only the changed rows on the console — smooth, flicker-free display (head O, body o, food F, walls #)</p></div>
   </div>
 </section>
 
@@ -64,23 +65,38 @@
 #include &lt;windows.h&gt;
 #include &lt;cstdlib&gt;
 #include &lt;ctime&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
 
 using namespace std;
 
 const int WIDTH = 40;
 const int HEIGHT = 20;
-const int MAXLEN = WIDTH * HEIGHT;   // FIX: tail array now fits the whole board (800)
+const int MAX_TAIL = 100;
 
-int x, y;
-int foodX, foodY;
-int score;
-int tailX[MAXLEN], tailY[MAXLEN];    // FIX: was [100] - too small for a 40x20 board
+const int SCREEN_WIDTH = 60;
+const int SCREEN_HEIGHT = 24;
+
+int x, y, foodX, foodY, score;
+int tailX[MAX_TAIL], tailY[MAX_TAIL];
 int tailLen;
 
-enum Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
+enum Direction
+{
+    STOP = 0,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+};
 
 Direction dir;
 bool gameOver;
+
+HANDLE consoleHandle;
+
+char screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+char oldScreen[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 // Function declarations
 void Setup();
@@ -88,21 +104,20 @@ void Draw();
 void Input();
 void Logic();
 void GenerateFood();
+void HideCursor();
 
-void Setup()
+// Hide cursor
+void HideCursor()
 {
-    gameOver = false;
-    dir = STOP;
+    CONSOLE_CURSOR_INFO info;
 
-    x = WIDTH / 2;
-    y = HEIGHT / 2;
+    info.dwSize = 1;
+    info.bVisible = FALSE;
 
-    score = 0;
-    tailLen = 0;
-
-    GenerateFood();
+    SetConsoleCursorInfo(consoleHandle, &amp;info);
 }
 
+// Generate food
 void GenerateFood()
 {
     bool occupied;
@@ -114,11 +129,11 @@ void GenerateFood()
         foodX = rand() % WIDTH;
         foodY = rand() % HEIGHT;
 
-        // Check snake head
         if (foodX == x &amp;&amp; foodY == y)
+        {
             occupied = true;
+        }
 
-        // Check snake tail
         for (int i = 0; i &lt; tailLen; i++)
         {
             if (tailX[i] == foodX &amp;&amp; tailY[i] == foodY)
@@ -131,65 +146,99 @@ void GenerateFood()
     } while (occupied);
 }
 
-void Draw()
+// Setup game
+void Setup()
 {
-    system("cls");
+    gameOver = false;
+    dir = STOP;
 
-    // Top border
-    for (int i = 0; i &lt; WIDTH + 2; i++)
-        cout &lt;&lt; "#";
+    x = WIDTH / 2;
+    y = HEIGHT / 2;
 
-    cout &lt;&lt; endl;
+    score = 0;
+    tailLen = 0;
 
-    // Game area
-    for (int i = 0; i &lt; HEIGHT; i++)
-    {
-        for (int j = 0; j &lt; WIDTH; j++)
-        {
-            if (j == 0)
-                cout &lt;&lt; "#";
+    memset(oldScreen, 0, sizeof(oldScreen));
 
-            if (i == y &amp;&amp; j == x)
-            {
-                cout &lt;&lt; "O";
-            }
-            else if (i == foodY &amp;&amp; j == foodX)
-            {
-                cout &lt;&lt; "F";
-            }
-            else
-            {
-                bool tailPart = false;
-
-                for (int k = 0; k &lt; tailLen; k++)
-                {
-                    if (tailX[k] == j &amp;&amp; tailY[k] == i)
-                    {
-                        cout &lt;&lt; "o";
-                        tailPart = true;
-                        break;
-                    }
-                }
-
-                if (!tailPart)
-                    cout &lt;&lt; " ";
-            }
-
-            if (j == WIDTH - 1)
-                cout &lt;&lt; "#";
-        }
-
-        cout &lt;&lt; endl;
-    }
-
-    // Bottom border
-    for (int i = 0; i &lt; WIDTH + 2; i++)
-        cout &lt;&lt; "#";
-
-    cout &lt;&lt; "\nScore: " &lt;&lt; score &lt;&lt; endl;
-    cout &lt;&lt; "Controls: W = Up, S = Down, A = Left, D = Right, X = Exit" &lt;&lt; endl;
+    GenerateFood();
 }
 
+// Draw game
+void Draw()
+{
+    // Clear drawing buffer
+    memset(screen, ' ', sizeof(screen));
+
+    // Top and bottom border
+    for (int j = 0; j &lt; WIDTH + 2; j++)
+    {
+        screen[0][j] = '#';
+        screen[HEIGHT + 1][j] = '#';
+    }
+
+    // Left and right border
+    for (int i = 1; i &lt;= HEIGHT; i++)
+    {
+        screen[i][0] = '#';
+        screen[i][WIDTH + 1] = '#';
+    }
+
+    // Food
+    screen[foodY + 1][foodX + 1] = 'F';
+
+    // Snake tail
+    for (int i = 0; i &lt; tailLen; i++)
+    {
+        screen[tailY[i] + 1][tailX[i] + 1] = 'o';
+    }
+
+    // Snake head
+    screen[y + 1][x + 1] = 'O';
+
+    // Score
+    char scoreText[50];
+
+    sprintf(scoreText, "Score: %d", score);
+
+    for (int i = 0; scoreText[i] != '\0'; i++)
+    {
+        screen[22][i] = scoreText[i];
+    }
+
+    // Controls
+    const char controls[] = "W A S D = Move | X = Exit";
+
+    for (int i = 0; controls[i] != '\0'; i++)
+    {
+        screen[23][i] = controls[i];
+    }
+
+    // Update only changed rows
+    for (int i = 0; i &lt; SCREEN_HEIGHT; i++)
+    {
+        if (memcmp(screen[i], oldScreen[i], SCREEN_WIDTH) != 0)
+        {
+            COORD position;
+
+            position.X = 0;
+            position.Y = i;
+
+            DWORD written;
+
+            WriteConsoleOutputCharacterA(
+                consoleHandle,
+                screen[i],
+                SCREEN_WIDTH,
+                position,
+                &amp;written
+            );
+
+            memcpy(oldScreen[i], screen[i], SCREEN_WIDTH);
+        }
+    }
+}
+
+// Input
 void Input()
 {
     if (_kbhit())
@@ -230,49 +279,20 @@ void Input()
     }
 }
 
+// Game logic
 void Logic()
 {
-    // FIX (growth bug): save the position of the LAST tail segment
-    // BEFORE the tail moves. When the snake eats food, the new
-    // segment is placed exactly at this saved position.
-    // (In the old code tailLen++ happened without ever setting the
-    // new segment's position, so it appeared at (0,0) / a wrong
-    // place for one frame - and the very first segment was never
-    // placed at all, because with tailLen = 0 the tail never moved.)
-    int lastX, lastY;
-    if (tailLen &gt; 0)
-    {
-        lastX = tailX[tailLen - 1];
-        lastY = tailY[tailLen - 1];
-    }
-    else
-    {
-        // No tail yet: the first segment will be placed
-        // where the head is right now
-        lastX = x;
-        lastY = y;
-    }
-
     // Move tail
     if (tailLen &gt; 0)
     {
-        int prevX = tailX[0];
-        int prevY = tailY[0];
+        for (int i = tailLen - 1; i &gt; 0; i--)
+        {
+            tailX[i] = tailX[i - 1];
+            tailY[i] = tailY[i - 1];
+        }
 
         tailX[0] = x;
         tailY[0] = y;
-
-        for (int i = 1; i &lt; tailLen; i++)
-        {
-            int tempX = tailX[i];
-            int tempY = tailY[i];
-
-            tailX[i] = prevX;
-            tailY[i] = prevY;
-
-            prevX = tempX;
-            prevY = tempY;
-        }
     }
 
     // Move head
@@ -318,40 +338,74 @@ void Logic()
     // Food collision
     if (x == foodX &amp;&amp; y == foodY)
     {
-        if (tailLen &lt; MAXLEN)
+        if (tailLen &lt; MAX_TAIL)
         {
-            // FIX: actually PLACE the new segment at the saved
-            // position of the old last segment, then grow
-            tailX[tailLen] = lastX;
-            tailY[tailLen] = lastY;
+            // Add new tail segment
+            if (tailLen == 0)
+            {
+                tailX[tailLen] = x - (dir == RIGHT) + (dir == LEFT);
+                tailY[tailLen] = y - (dir == DOWN) + (dir == UP);
+            }
+            else
+            {
+                tailX[tailLen] = tailX[tailLen - 1];
+                tailY[tailLen] = tailY[tailLen - 1];
+            }
+
             tailLen++;
             score += 10;
+
             GenerateFood();
+        }
+        else
+        {
+            gameOver = true;
         }
     }
 }
 
+// Main function
 int main()
 {
     srand((unsigned int)time(0));
+
+    // Set console size
+    system("mode con: cols=65 lines=30");
+
+    consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Clear screen once
+    system("cls");
+
+    HideCursor();
 
     Setup();
 
     while (!gameOver)
     {
-        Draw();
         Input();
+
+        if (gameOver)
+            break;
+
         Logic();
+
+        Draw();
 
         Sleep(100);
     }
 
-    system("cls");
+    // Final result
+    Draw();
 
-    cout &lt;&lt; "============================" &lt;&lt; endl;
-    cout &lt;&lt; "         GAME OVER          " &lt;&lt; endl;
-    cout &lt;&lt; "============================" &lt;&lt; endl;
+    COORD position;
 
+    position.X = 0;
+    position.Y = 25;
+
+    SetConsoleCursorPosition(consoleHandle, position);
+
+    cout &lt;&lt; "\nGAME OVER!" &lt;&lt; endl;
     cout &lt;&lt; "Final Score: " &lt;&lt; score &lt;&lt; endl;
 
     cout &lt;&lt; "\nPress any key to exit...";
