@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Management System — OOP in C++ | Project by Muhammad Zohaib</title>
+<meta name="description" content="Complete OOP project by Muhammad Zohaib — Library Management System in C++ using classes, inheritance, polymorphism and encapsulation, with a working demo and full source code.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>body{font-family:Inter,sans-serif;background:#05070f}.font-sora{font-family:Sora,sans-serif}code,pre{font-family:'JetBrains Mono',monospace}.glass{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(12px)}pre{overflow-x:auto}input,select{outline:none}input:focus,select:focus{border-color:rgba(94,160,255,.75)!important;box-shadow:0 0 0 3px rgba(47,123,255,.18)}select option{background:#0d1330}</style>
+</head>
+<body class="text-slate-200 antialiased">
+<header class="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between">
+  <a href="index.html#work" class="text-sm font-semibold text-blue-400 hover:text-blue-300">← Back to Portfolio</a>
+  <span class="text-[11px] font-bold tracking-wide rounded-full bg-white/10 ring-1 ring-white/20 px-3 py-1">COMPLETE PROJECT — OOP / C++</span>
+</header>
+
+<section class="max-w-6xl mx-auto px-5 pt-4 pb-8">
+  <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-white">Library Management System <span class="text-blue-400">— OOP in C++</span></h1>
+  <p class="text-slate-400 mt-3 max-w-2xl">A complete Object-Oriented Programming project: a library system that manages books and e-books, members, issuing and returns. It demonstrates all four pillars of OOP in one real program. Try the working demo, then read the full C++ source code below.</p>
+  <div class="flex flex-wrap gap-2 mt-5 text-xs font-semibold text-blue-300">
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">C++</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Classes &amp; Objects</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Inheritance</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Polymorphism</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Encapsulation</span>
+    <span class="rounded-full bg-blue-500/10 ring-1 ring-blue-400/25 px-3 py-1">Abstraction</span>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-6 grid grid-cols-3 gap-4 text-center">
+  <div class="glass rounded-3xl py-5"><p class="font-sora text-3xl font-extrabold text-white" id="statTotal">0</p><p class="text-xs text-slate-400 mt-1 font-semibold tracking-wide">TOTAL BOOKS</p></div>
+  <div class="glass rounded-3xl py-5"><p class="font-sora text-3xl font-extrabold text-white" id="statAvail">0</p><p class="text-xs text-slate-400 mt-1 font-semibold tracking-wide">AVAILABLE</p></div>
+  <div class="glass rounded-3xl py-5"><p class="font-sora text-3xl font-extrabold text-white" id="statIssued">0</p><p class="text-xs text-slate-400 mt-1 font-semibold tracking-wide">ISSUED</p></div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-14 grid lg:grid-cols-3 gap-6 items-start">
+  <form id="addForm" class="glass rounded-3xl p-6">
+    <h2 class="font-sora font-bold text-white text-lg">Add Book</h2>
+    <label class="block text-sm font-semibold mt-4 mb-1.5">Book Title</label>
+    <input id="f-title" required placeholder="e.g. C++ Primer" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-white placeholder:text-slate-500">
+    <label class="block text-sm font-semibold mt-4 mb-1.5">Author</label>
+    <input id="f-author" required placeholder="e.g. Stanley Lippman" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-white placeholder:text-slate-500">
+    <label class="block text-sm font-semibold mt-4 mb-1.5">Type</label>
+    <select id="f-type" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-white">
+      <option>Physical Book</option><option>E-Book</option>
+    </select>
+    <button class="w-full mt-6 rounded-xl py-3 font-sora font-bold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Add Book</button>
+    <p class="text-slate-500 text-xs mt-3">Demo data resets on reload — the C++ program below is the complete system.</p>
+  </form>
+
+  <div class="glass rounded-3xl p-6 lg:col-span-2">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="font-sora font-bold text-white text-lg">Library Books</h2>
+      <input id="search" placeholder="🔍 Search title or author..." class="rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-white placeholder:text-slate-500 w-full sm:w-72">
+    </div>
+    <div class="overflow-x-auto mt-4">
+      <table class="w-full text-sm min-w-[540px]">
+        <thead><tr class="text-left text-slate-400 border-b border-white/10">
+          <th class="py-2.5 pr-3 font-semibold">ID</th><th class="py-2.5 pr-3 font-semibold">Title</th><th class="py-2.5 pr-3 font-semibold">Author</th><th class="py-2.5 pr-3 font-semibold">Type</th><th class="py-2.5 pr-3 font-semibold">Status</th><th class="py-2.5 font-semibold">Action</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p id="empty" class="hidden text-slate-500 text-sm py-6 text-center">No books match your search.</p>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-14">
+  <h2 class="font-sora text-2xl font-bold text-white">OOP Concepts Used in This Project</h2>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 text-center">
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Encapsulation</p><p class="text-slate-400 text-sm mt-1">Book data is private — accessed only through getter/setter methods</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Inheritance</p><p class="text-slate-400 text-sm mt-1"><code class="text-blue-300">EBook</code> inherits from <code class="text-blue-300">Book</code>; <code class="text-blue-300">Member</code> inherits from <code class="text-blue-300">Person</code></p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Polymorphism</p><p class="text-slate-400 text-sm mt-1">Virtual <code class="text-blue-300">display()</code> behaves differently for books and e-books</p></div>
+    <div class="glass rounded-3xl p-5"><p class="font-sora font-bold text-white">Abstraction</p><p class="text-slate-400 text-sm mt-1"><code class="text-blue-300">Person</code> is an abstract class with a pure virtual <code class="text-blue-300">role()</code></p></div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pb-16">
+  <div class="glass rounded-3xl p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="font-sora font-bold text-white text-lg">📄 Full Source Code — library.cpp</h2>
+      <button id="copyBtn" class="glass rounded-xl px-4 py-2 text-sm font-semibold">Copy Code</button>
+    </div>
+    <pre class="text-[12.5px] leading-relaxed text-slate-300 bg-black/40 rounded-2xl p-4 mt-4"><code id="srcCode">// ============================================================
+//  Library Management System - OOP Project in C++
+//  Concepts: Encapsulation, Inheritance, Polymorphism,
+//            Abstraction, Constructors, Virtual Functions
+// ============================================================
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// ---------- BOOK: base class (Encapsulation) ----------
+class Book {
+private:
+    int id;
+    string title, author;
+    bool issued;
+public:
+    Book(int i, string t, string a)
+        : id(i), title(t), author(a), issued(false) {}
+
+    int    getId()     const { return id; }
+    string getTitle()  const { return title; }
+    bool   isIssued()  const { return issued; }
+    void   issue()           { issued = true; }
+    void   giveBack()        { issued = false; }
+
+    // Virtual function -&gt; run-time Polymorphism
+    virtual void display() const {
+        cout &lt;&lt; id &lt;&lt; " | " &lt;&lt; title &lt;&lt; " by " &lt;&lt; author
+             &lt;&lt; (issued ? "  [ISSUED]" : "  [Available]") &lt;&lt; "\n";
+    }
+    virtual ~Book() {}
+};
+
+// ---------- EBOOK: derived class (Inheritance) ----------
+class EBook : public Book {
+    double sizeMB;
+public:
+    EBook(int i, string t, string a, double s)
+        : Book(i, t, a), sizeMB(s) {}
+
+    void display() const override {          // Polymorphism
+        Book::display();
+        cout &lt;&lt; "     (E-Book, " &lt;&lt; sizeMB &lt;&lt; " MB)\n";
+    }
+};
+
+// ---------- PERSON: abstract class (Abstraction) ----------
+class Person {
+protected:
+    string name;
+public:
+    Person(string n) : name(n) {}
+    virtual void role() const = 0;           // pure virtual
+    virtual ~Person() {}
+};
+
+class Member : public Person {
+    int memberId;
+public:
+    Member(string n, int id) : Person(n), memberId(id) {}
+    void role() const override {
+        cout &lt;&lt; name &lt;&lt; " (Member #" &lt;&lt; memberId &lt;&lt; ")\n";
+    }
+};
+
+// ---------- LIBRARY: manages everything ----------
+class Library {
+    vector&lt;Book*&gt; books;   // base pointers -&gt; polymorphism
+public:
+    void addBook(Book* b) { books.push_back(b); }
+
+    Book* find(int id) {
+        for (Book* b : books)
+            if (b-&gt;getId() == id) return b;
+        return nullptr;
+    }
+    void issueBook(int id) {
+        Book* b = find(id);
+        if (b &amp;&amp; !b-&gt;isIssued()) { b-&gt;issue();    cout &lt;&lt; "Book issued.\n"; }
+        else                        cout &lt;&lt; "Book not available.\n";
+    }
+    void returnBook(int id) {
+        Book* b = find(id);
+        if (b) { b-&gt;giveBack(); cout &lt;&lt; "Book returned.\n"; }
+    }
+    void showAll() const {
+        for (Book* b : books) b-&gt;display();
+    }
+    ~Library() { for (Book* b : books) delete b; }
+};
+
+// ---------- MAIN: menu-driven program ----------
+int main() {
+    Library lib;
+    lib.addBook(new Book (1, "C++ Primer",        "Lippman"));
+    lib.addBook(new EBook(2, "Clean Code (PDF)",  "Martin", 4.2));
+    lib.addBook(new Book (3, "Data Structures",   "Karumanchi"));
+
+    Member m("Muhammad Zohaib", 101);
+    int choice, id;
+    do {
+        cout &lt;&lt; "\n1. Show Books  2. Issue  3. Return  0. Exit\nChoice: ";
+        cin &gt;&gt; choice;
+        if (choice == 1) lib.showAll();
+        else if (choice == 2) { cout &lt;&lt; "Book ID: "; cin &gt;&gt; id; lib.issueBook(id); }
+        else if (choice == 3) { cout &lt;&lt; "Book ID: "; cin &gt;&gt; id; lib.returnBook(id); }
+    } while (choice != 0);
+    return 0;
+}</code></pre>
+    <p class="text-slate-500 text-xs mt-3">Compile: <code class="text-blue-300">g++ library.cpp -o library</code> — runs in any C++ compiler (Dev-C++, VS Code, Code::Blocks).</p>
+  </div>
+</section>
+
+<footer class="max-w-6xl mx-auto px-5 pb-10 text-center text-slate-500 text-sm">
+  <p>Complete OOP project by Muhammad Zohaib — C++. Need an OOP / C++ project or assignment help? <a class="text-blue-400 font-semibold" href="index.html#contact">Contact Zohaib →</a></p>
+</footer>
+
+<script>
+let books = [
+  {id:1, title:'C++ Primer', author:'Stanley Lippman', type:'Physical Book', issued:false},
+  {id:2, title:'Clean Code (PDF)', author:'Robert Martin', type:'E-Book', issued:false},
+  {id:3, title:'Data Structures', author:'Narasimha Karumanchi', type:'Physical Book', issued:true},
+  {id:4, title:'Object Oriented Programming', author:'E. Balagurusamy', type:'Physical Book', issued:false}
+];
+let nextId = 5;
+const rows = document.getElementById('rows');
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const list = books.filter(b => !q || (b.title+' '+b.author).toLowerCase().includes(q));
+  rows.innerHTML = '';
+  list.forEach(b => {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b border-white/5';
+    tr.innerHTML = `<td class="py-3 pr-3 font-semibold text-blue-300">${b.id}</td><td class="py-3 pr-3 text-white">${b.title}</td><td class="py-3 pr-3">${b.author}</td><td class="py-3 pr-3">${b.type}</td>
+      <td class="py-3 pr-3">${b.issued ? '<span class="text-rose-300 font-semibold">Issued</span>' : '<span class="text-emerald-300 font-semibold">Available</span>'}</td>
+      <td class="py-3"><button class="act font-semibold ${b.issued ? 'text-amber-300 hover:text-amber-200' : 'text-blue-400 hover:text-blue-300'}" data-id="${b.id}">${b.issued ? 'Return' : 'Issue'}</button></td>`;
+    rows.appendChild(tr);
+  });
+  document.getElementById('empty').classList.toggle('hidden', list.length > 0);
+  document.getElementById('statTotal').textContent = books.length;
+  document.getElementById('statAvail').textContent = books.filter(b => !b.issued).length;
+  document.getElementById('statIssued').textContent = books.filter(b => b.issued).length;
+  rows.querySelectorAll('.act').forEach(btn => btn.addEventListener('click', () => {
+    const b = books.find(x => x.id == btn.dataset.id); b.issued = !b.issued; render();
+  }));
+}
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  books.push({ id: nextId++, title: document.getElementById('f-title').value.trim(), author: document.getElementById('f-author').value.trim(), type: document.getElementById('f-type').value, issued: false });
+  e.target.reset(); render();
+});
+document.getElementById('copyBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('srcCode').innerText).then(() => {
+    const b = document.getElementById('copyBtn'); b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy Code', 1800);
+  });
+});
+render();
+</script>
+</body>
+</html>
