@@ -34,7 +34,7 @@
       <p class="font-sora font-bold text-white">Score: <span id="score" class="text-blue-400">0</span></p>
       <button id="startBtn" class="rounded-xl px-4 py-2 text-sm font-semibold text-white" style="background:linear-gradient(92deg,#2f7bff,#8b5cf6)">Start / Restart</button>
     </div>
-    <canvas id="game" width="400" height="400" class="mx-auto mt-5 w-full max-w-[400px] h-auto"></canvas>
+    <canvas id="game" width="800" height="400" class="mx-auto mt-5 w-full max-w-[640px] h-auto"></canvas>
     <p id="msg" class="text-slate-400 text-sm mt-3">Use arrow keys (desktop) or the buttons below (mobile). Eat the food, don't hit the walls or yourself!</p>
     <div class="grid grid-cols-3 gap-2 max-w-[220px] mx-auto mt-4 sm:hidden">
       <span></span><button class="dbtn glass rounded-xl py-3 text-lg" data-dir="up">⬆️</button><span></span>
@@ -60,51 +60,73 @@
       <button id="copyBtn" class="glass rounded-xl px-4 py-2 text-sm font-semibold">Copy Code</button>
     </div>
     <pre class="text-[12.5px] leading-relaxed text-slate-300 bg-black/40 rounded-2xl p-4 mt-4"><code id="srcCode">// ============================================================
-//  Snake Game - Complete C++ Project
+//  Snake Game - Complete C++ Project (Corrected Version)
 //  Concepts: arrays, functions, loops, game loop,
 //            random numbers, collision detection
 //  Controls: W A S D to move, X to exit
+//  Compiler: Dev-C++ / Code::Blocks (Windows)
 // ============================================================
 #include &lt;iostream&gt;
-#include &lt;conio.h&gt;      // kbhit(), getch()  (Windows / Dev-C++)
+#include &lt;conio.h&gt;      // _kbhit(), _getch()
 #include &lt;windows.h&gt;    // Sleep()
-#include &lt;cstdlib&gt;      // rand()
+#include &lt;cstdlib&gt;      // rand(), srand()
+#include &lt;ctime&gt;        // time()
 using namespace std;
 
-const int WIDTH = 20, HEIGHT = 20;
-int x, y, foodX, foodY, score;
-int tailX[100], tailY[100], tailLen;
-enum Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
-Direction dir;
+const int WIDTH  = 40;              // board width  (rectangular board)
+const int HEIGHT = 20;              // board height
+const int MAXLEN = WIDTH * HEIGHT;  // maximum possible snake length
+
+int x, y;                           // snake head position
+int foodX, foodY;                   // food position
+int score;
+int tailX[MAXLEN], tailY[MAXLEN];   // snake tail segments
+int tailLen;
 bool gameOver;
 
+enum Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
+Direction dir;
+
+// Place food on a random EMPTY cell (never on the snake)
+void PlaceFood() {
+    bool onSnake;
+    do {
+        onSnake = false;
+        foodX = rand() % WIDTH;
+        foodY = rand() % HEIGHT;
+        if (foodX == x &amp;&amp; foodY == y) onSnake = true;
+        for (int i = 0; i &lt; tailLen; i++)
+            if (tailX[i] == foodX &amp;&amp; tailY[i] == foodY) onSnake = true;
+    } while (onSnake);
+}
+
 void Setup() {
+    srand(time(0));            // seed for random food positions
     gameOver = false;
     dir = STOP;
-    x = WIDTH / 2;  y = HEIGHT / 2;          // snake in centre
-    foodX = rand() % WIDTH;                  // random food
-    foodY = rand() % HEIGHT;
-    score = 0;  tailLen = 0;
+    x = WIDTH / 2;             // snake starts in the centre
+    y = HEIGHT / 2;
+    score = 0;
+    tailLen = 0;               // snake starts with NO tail
+    PlaceFood();
 }
 
 void Draw() {
-    system("cls");
+    system("cls");             // clear screen every frame
     for (int i = 0; i &lt; WIDTH + 2; i++) cout &lt;&lt; "#";
     cout &lt;&lt; "\n";
     for (int i = 0; i &lt; HEIGHT; i++) {
         for (int j = 0; j &lt; WIDTH; j++) {
-            if (j == 0) cout &lt;&lt; "#";
-            if (i == y &amp;&amp; j == x) cout &lt;&lt; "O";            // head
+            if (j == 0) cout &lt;&lt; "#";                        // left wall
+            if (i == y &amp;&amp; j == x) cout &lt;&lt; "O";              // head
             else if (i == foodY &amp;&amp; j == foodX) cout &lt;&lt; "F"; // food
             else {
                 bool tailPart = false;
                 for (int k = 0; k &lt; tailLen; k++)
-                    if (tailX[k] == j &amp;&amp; tailY[k] == i) {
-                        cout &lt;&lt; "o"; tailPart = true;
-                    }
-                if (!tailPart) cout &lt;&lt; " ";
+                    if (tailX[k] == j &amp;&amp; tailY[k] == i) tailPart = true;
+                cout &lt;&lt; (tailPart ? "o" : " ");
             }
-            if (j == WIDTH - 1) cout &lt;&lt; "#";
+            if (j == WIDTH - 1) cout &lt;&lt; "#";                // right wall
         }
         cout &lt;&lt; "\n";
     }
@@ -114,26 +136,24 @@ void Draw() {
 
 void Input() {
     if (_kbhit()) {
-        switch (_getch()) {
-            case 'a': dir = LEFT;  break;
-            case 'd': dir = RIGHT; break;
-            case 'w': dir = UP;    break;
-            case 's': dir = DOWN;  break;
-            case 'x': gameOver = true; break;
+        char key = _getch();
+        switch (key) {
+            // Opposite direction is NOT allowed (no instant suicide)
+            case 'a': case 'A': if (dir != RIGHT) dir = LEFT;  break;
+            case 'd': case 'D': if (dir != LEFT)  dir = RIGHT; break;
+            case 'w': case 'W': if (dir != DOWN)  dir = UP;    break;
+            case 's': case 'S': if (dir != UP)    dir = DOWN;  break;
+            case 'x': case 'X': gameOver = true; break;
         }
     }
 }
 
 void Logic() {
-    // move the tail: each segment follows the one before it
-    int prevX = tailX[0], prevY = tailY[0], tempX, tempY;
-    tailX[0] = x;  tailY[0] = y;
-    for (int i = 1; i &lt; tailLen; i++) {
-        tempX = tailX[i];  tempY = tailY[i];
-        tailX[i] = prevX;  tailY[i] = prevY;
-        prevX = tempX;     prevY = tempY;
-    }
-    // move the head
+    if (dir == STOP) return;              // wait for the first key
+
+    int oldX = x, oldY = y;               // head position before moving
+
+    // 1) Move the head
     switch (dir) {
         case LEFT:  x--; break;
         case RIGHT: x++; break;
@@ -141,18 +161,42 @@ void Logic() {
         case DOWN:  y++; break;
         default: break;
     }
-    // wall collision
-    if (x &lt; 0 || x &gt;= WIDTH || y &lt; 0 || y &gt;= HEIGHT) gameOver = true;
-    // self collision
+
+    // 2) Wall collision
+    if (x &lt; 0 || x &gt;= WIDTH || y &lt; 0 || y &gt;= HEIGHT) {
+        gameOver = true;
+        return;
+    }
+
+    // 3) Did the snake eat the food?
+    bool ate = (x == foodX &amp;&amp; y == foodY);
+
+    // 4) Move the tail: every segment takes the place of the
+    //    segment in front of it, and segment 0 takes the old
+    //    head position. Safe even when tailLen = 0.
+    if (ate) {
+        // Grow: shift one extra place so the last segment is kept
+        for (int i = tailLen; i &gt;= 1; i--) {
+            tailX[i] = tailX[i - 1];
+            tailY[i] = tailY[i - 1];
+        }
+        tailX[0] = oldX;
+        tailY[0] = oldY;
+        tailLen++;
+        score += 10;                      // +10 on every food
+        PlaceFood();                      // new random food
+    } else if (tailLen &gt; 0) {
+        for (int i = tailLen - 1; i &gt;= 1; i--) {
+            tailX[i] = tailX[i - 1];
+            tailY[i] = tailY[i - 1];
+        }
+        tailX[0] = oldX;
+        tailY[0] = oldY;
+    }
+
+    // 5) Self collision: head touches any tail segment
     for (int i = 0; i &lt; tailLen; i++)
         if (tailX[i] == x &amp;&amp; tailY[i] == y) gameOver = true;
-    // food eaten: grow + new food + score
-    if (x == foodX &amp;&amp; y == foodY) {
-        score += 10;
-        tailLen++;
-        foodX = rand() % WIDTH;
-        foodY = rand() % HEIGHT;
-    }
 }
 
 int main() {
@@ -161,11 +205,15 @@ int main() {
         Draw();
         Input();
         Logic();
-        Sleep(80);          // game speed
+        Sleep(80);                        // game speed
     }
-    cout &lt;&lt; "Game Over! Final Score: " &lt;&lt; score &lt;&lt; "\n";
+    cout &lt;&lt; "\n==============================\n";
+    cout &lt;&lt; "          GAME OVER!\n";
+    cout &lt;&lt; "          Final Score: " &lt;&lt; score &lt;&lt; "\n";
+    cout &lt;&lt; "==============================\n";
     return 0;
-}</code></pre>
+}
+</code></pre>
     <p class="text-slate-500 text-xs mt-3">Compile on Windows with Dev-C++ / Code::Blocks, or: <code class="text-blue-300">g++ snake.cpp -o snake</code></p>
   </div>
 </section>
@@ -176,24 +224,24 @@ int main() {
 
 <script>
 const cv = document.getElementById('game'), ctx = cv.getContext('2d');
-const N = 20, CELL = 20;
+const COLS = 40, ROWS = 20, CELL = 20;
 let snake, food, dir, nextDir, score, timer = null, alive = false;
 function reset(){
-  snake = [{x:10, y:10}]; dir = {x:0, y:0}; nextDir = {x:0, y:0}; score = 0; alive = true;
+  snake = [{x:20, y:10}]; dir = {x:0, y:0}; nextDir = {x:0, y:0}; score = 0; alive = true;
   placeFood(); updateScore(); draw();
   document.getElementById('msg').textContent = 'Game on! Eat the food 🍎';
   if (timer) clearInterval(timer);
   timer = setInterval(step, 110);
 }
 function placeFood(){
-  do { food = {x: Math.floor(Math.random()*N), y: Math.floor(Math.random()*N)}; }
+  do { food = {x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS)}; }
   while (snake.some(s => s.x === food.x && s.y === food.y));
 }
 function step(){
   dir = nextDir;
   if (dir.x === 0 && dir.y === 0) return;
   const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
-  if (head.x < 0 || head.x >= N || head.y < 0 || head.y >= N || snake.some(s => s.x === head.x && s.y === head.y)) {
+  if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS || snake.some(s => s.x === head.x && s.y === head.y)) {
     alive = false; clearInterval(timer);
     document.getElementById('msg').textContent = '💀 Game Over! Final score: ' + score + ' — press Start to play again.';
     return;
@@ -204,11 +252,13 @@ function step(){
   draw();
 }
 function draw(){
-  ctx.fillStyle = '#070b1d'; ctx.fillRect(0, 0, 400, 400);
+  ctx.fillStyle = '#070b1d'; ctx.fillRect(0, 0, 800, 400);
   ctx.strokeStyle = 'rgba(255,255,255,.05)';
-  for (let i = 1; i < N; i++) {
+  for (let i = 1; i < COLS; i++) {
     ctx.beginPath(); ctx.moveTo(i*CELL, 0); ctx.lineTo(i*CELL, 400); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, i*CELL); ctx.lineTo(400, i*CELL); ctx.stroke();
+  }
+  for (let i = 1; i < ROWS; i++) {
+    ctx.beginPath(); ctx.moveTo(0, i*CELL); ctx.lineTo(800, i*CELL); ctx.stroke();
   }
   ctx.fillStyle = '#f43f5e';
   ctx.beginPath(); ctx.arc(food.x*CELL + 10, food.y*CELL + 10, 8, 0, Math.PI*2); ctx.fill();
@@ -236,7 +286,7 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     const b = document.getElementById('copyBtn'); b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy Code', 1800);
   });
 });
-snake = [{x:10, y:10}]; food = {x:14, y:10}; score = 0; draw();
+snake = [{x:20, y:10}]; food = {x:26, y:10}; score = 0; draw();
 </script>
 </body>
 </html>
